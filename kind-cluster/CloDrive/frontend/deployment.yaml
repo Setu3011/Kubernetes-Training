@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clodrive-frontend
+  namespace: clodrive
+  labels:
+    app: clodrive-frontend
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: clodrive-frontend
+
+  template:
+    metadata:
+      labels:
+        app: clodrive-frontend
+
+    spec:
+      containers:
+        - name: frontend
+          image: setu3011/clodrive-frontend:latest
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 20

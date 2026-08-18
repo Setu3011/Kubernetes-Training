@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  name: clodrive-frontend-rs
+  namespace: clodrive
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: clodrive-frontend-rs
+
+  template:
+    metadata:
+      labels:
+        app: clodrive-frontend-rs
+
+    spec:
+      containers:
+        - name: frontend
+          image: setu3011/clodrive-frontend:latest
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
