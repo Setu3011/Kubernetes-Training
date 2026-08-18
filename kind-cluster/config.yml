@@ -11,10 +11,10 @@ nodes:
 - role: worker
   image: kindest/node:v1.31.2
   extraPortMappings:
-  - containerPort: 80
-    hostPort: 50080
+  - containerPort: 30080
+    hostPort: 30080
     protocol: TCP
   - containerPort: 443
-    hostPort: 50443 
+    hostPort: 30443
     protocol: TCP
 
