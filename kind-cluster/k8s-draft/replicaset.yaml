@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet    
+metadata:
+  name: clodrive-rc
+  namespace: k8s-draft
+  labels:
+    env: development
+spec:  
+  template:
+    metadata:
+      labels:
+        env: development
+      name: clodrive
+    spec:
+      containers:
+      - name: clodrive
+        image: setu3011/clodrive-frontend:latest
+        ports:
+        - containerPort: 3001
+  replicas: 3    
+  selector:
+    matchLabels:
+      env: development

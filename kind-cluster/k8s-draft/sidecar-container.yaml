@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: basic-sidecar-pod
+  namespace: k8s-draft
+spec:
+  initContainers:
+  - name: my-sidecar-container
+    image: busybox
+    restartPolicy: Always     # <-- This line makes it a permanent sidecar
+    command: ['sh', '-c', 'while true; do echo "Sidecar running..."; sleep 10; done']
+
+  containers:
+  - name: main-container
+    image: nginx

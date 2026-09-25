@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: basic-init-pod
+  namespace: k8s-draft
+spec:
+  initContainers:
+  - name: my-init-container
+    image: busybox
+    command: ['echo', 'Init container task completed!']
+
+  containers:
+  - name: main-container
+    image: nginx
