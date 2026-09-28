@@ -1,0 +1,48 @@
+# Label = gives the pod an identity
+# Selector = searches for pod having a particular label
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-deployment
+  namespace: k8s-draft
+  labels:
+    # 1. Deployment Labels: Used to organize and identify the Deployment itself
+    app: web-shop
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      # 2. Deployment Selector: Tells the Deployment which Pods it owns
+      app: web-shop
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        # 3. Pod Labels: Must match the Deployment Selector above
+        app: web-shop
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service
+  namespace: k8s-draft
+  labels:
+    tier: frontend
+spec:
+  type: ClusterIP
+  selector:
+    # 4. Service Selector: Routes traffic to any Pods matching these labels
+    app: web-shop
+    tier: frontend
+  ports:
+  - port: 80
+    targetPort: 80

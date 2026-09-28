@@ -1,3 +1,5 @@
+# SideCar container that runs alongside the main container for its entire lifetime to assist with tasks like logging, proxying, or monitoring.
+
 apiVersion: v1
 kind: Pod
 metadata:

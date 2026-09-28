@@ -1,0 +1,26 @@
+# CronJob → runs a Job according to a scheduled interval of time, such as every 5 minutes, every day, etc.
+
+apiVersion: batch/v1
+kind: CronJob
+
+metadata:
+  name: daily-backup
+
+spec:
+  schedule: "0 0 * * *"  # Every day at 00:00
+
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: backup
+              image: busybox:latest
+              command:
+                - sh
+                - -c
+                - |
+                  echo "Starting daily backup..."
+                  echo "Backup completed successfully!"
+
+          restartPolicy: Never     #  if the container inside the Pod crashes or exits with an error, Kubernetes will never restart that specific Pod.

@@ -1,3 +1,5 @@
+# A permanent internal or external network endpoint that provides a stable IP address and load balancing to reach your dynamic Pods.
+
 apiVersion: v1
 kind: Service    
 metadata: 

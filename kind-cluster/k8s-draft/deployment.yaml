@@ -1,3 +1,5 @@
+# A higher-level resource that automates the lifecycle, scaling, and zero-downtime updates of your application Pods.
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:

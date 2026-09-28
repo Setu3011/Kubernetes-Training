@@ -1,3 +1,5 @@
+# A background controller managed by the Deployment that ensures the exact number of identical Pod replicas are running at all times
+
 apiVersion: apps/v1
 kind: ReplicaSet    
 metadata:

@@ -1,3 +1,5 @@
+# A Namespace is a virtual cluster that provides a way to divide cluster resources between multiple users or teams. It allows for resource isolation and organization within a Kubernetes cluster.
+
 apiVersion: v1
 kind: Namespace
 metadata:

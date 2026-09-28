@@ -1,0 +1,2 @@
+# StatefulSet are used to manage stateful applications. They provide guarantees about the ordering and uniqueness of pods. StatefulSets are useful for applications that require stable, persistent storage, and ordered deployment and scaling.
+

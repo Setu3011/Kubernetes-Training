@@ -1,0 +1,21 @@
+# DaemonSet ensures that a copy of a Pod runs on all (or some) nodes in the cluster. It is used for tasks that need to run on every node, such as log collectors, monitoring agents, or network proxies.
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemonset-pod
+  namespace: k8s-draft
+spec:
+  template:
+    metadata:
+      labels:
+        app: development
+    spec:
+      containers:
+      - name: daemonset-container
+        image: setu3011/clodrive-frontend:latest
+        ports:
+        - containerPort: 3001
+  selector:
+    matchLabels:
+      app: development
