@@ -1,0 +1,39 @@
+# Node Affinity is a scheduling feature in Kubernetes that allows you to attract pods to specific nodes based on labels attached to those nodes. 
+
+# Node affinity is used to control which Nodes a Pod should or must run on, based on labels assigned to those Nodes.
+
+# Node affinity = I want my Pod to run on a Node having these labels.
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: required-affinity-demo
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: required-demo
+
+  template:
+    metadata:
+      labels:
+        app: required-demo
+
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: workload
+                    operator: In
+                    values:
+                      - high-memory
+
+      containers:
+        - name: nginx
+          image: nginx:latest

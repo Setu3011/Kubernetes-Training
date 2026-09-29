@@ -1,2 +1,49 @@
 # StatefulSet are used to manage stateful applications. They provide guarantees about the ordering and uniqueness of pods. StatefulSets are useful for applications that require stable, persistent storage, and ordered deployment and scaling.
 
+# A stateful application needs to maintain data, identity, or storage across Pod restarts/replacements.
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: k8s-draft
+spec:
+  serviceName: postgres
+  replicas: 4
+  
+  selector:
+    matchLabels:
+      app: postgres
+
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "mypassword"
+
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data  # Mount the volume to the PostgreSQL data directory indisde the container
+
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-storage
+
+      spec:
+        accessModes:
+          - ReadWriteOnce
+
+        resources:
+          requests:
+            storage: 5Gi

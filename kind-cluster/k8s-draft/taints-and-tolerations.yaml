@@ -1,0 +1,22 @@
+ # Taints are applied to Nodes to restrict which Pods can be scheduled there, while tolerations are applied to Pods to allow them to run on nodes with matching taints.
+
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: database-pod
+
+spec:
+  tolerations:
+    - key: "database"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+
+  containers:
+    - name: postgres
+      image: postgres:16
+
+      env:
+        - name: POSTGRES_PASSWORD
+          value: "mypassword"
