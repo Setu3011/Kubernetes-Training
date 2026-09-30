@@ -1,3 +1,5 @@
+# the scheduler prefers matching nodes but can use another suitable node if necessary.
+
 apiVersion: apps/v1
 kind: Deployment
 
@@ -29,7 +31,6 @@ spec:
                     operator: In
                     values:
                       - high-memory
-
       containers:
         - name: nginx
           image: nginx:latest

@@ -4,6 +4,8 @@
 
 # Node affinity = I want my Pod to run on a Node having these labels.
 
+# If the required node label is not available on any suitable node, the Pod cannot be scheduled and remains Pending.
+
 apiVersion: apps/v1
 kind: Deployment
 

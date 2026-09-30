@@ -1,0 +1,19 @@
+# Request and Limits control how much CPU and memory a container asks for and how much it is allowed to consume.
+
+# requests specify the minimum amount of CPU and memory that a container needs to run. Limits specify the maximum amount of cpu and memory that a container is allowed to use. If a container exceeds its limit, it may be terminated or throttled.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: requests-and-limits
+spec:
+  containers:
+  - name: requests-and-limits-nginx
+    image: nginx:latest
+    resources:
+      requests:
+        memory: "64Mi"    # for scheduling the pod, it needs at least 64Mi of memory and 250m of CPU 
+        cpu: "250m"
+      limits:
+        memory: "128Mi"   # the container can use up to 128Mi of memory and 500m of CPU
+        cpu: "500m"
