@@ -1,0 +1,13 @@
+# ConfigMaps are used to store the non-confidential data in key-value pairs.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+
+data:
+  APP_NAME: "CloDrive"
+  ENVIRONMENT: "production"
+  BACKEND_URL: "http://backend-service:5000"
+  LOG_LEVEL: "info"
+  DEBUG_MODE: "false"

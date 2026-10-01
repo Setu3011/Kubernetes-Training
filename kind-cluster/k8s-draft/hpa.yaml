@@ -1,5 +1,7 @@
 # Horizontal Pod Autoscaler adds or removes the number of pods based on CPU utilization and other metrics. It automatically scales the number of pods.
 
+# HPA → 1 Pod → 3 Pods 
+
 # Horizontal = increase/decrease the number of pods based on metrics
 
 apiVersion: autoscaling/v2
