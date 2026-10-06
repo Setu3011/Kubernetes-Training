@@ -1,0 +1,43 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader-role
+  namespace: default
+rules:
+- apiGroups: [""]   # "" indicates the core API group
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+# ===========Create/Add a New Cluster================
+#----------- Create a new cluster named "prod-cluster"----------------
+# kind create cluster --name prod-cluster
+
+
+# ===========View Cluster Connections================
+#----------- View all active Kind clusters running in Docker--------
+# kind get clusters
+
+#-----------View all cluster connections saved in your kubectl config--
+# kubectl config get-clusters
+
+#-----------View all available contexts (Cluster + User mappings)------
+# kubectl config get-contexts 
+
+
+#==========Switch to the new cluster context================
+#----------- Switch to the new cluster context---------------
+# kubectl config use-context kind-prod-cluster
+
+#-----------Confirm that you successfully switched---------
+# kubectl config current-context
+
+
+#==========Connect the API Server & Verify================
+# ----------Force-export the correct API server port and TLS keys from the running container-----------------
+# kind export kubeconfig --name prod-cluster
+
+# -----------Verify the live API server connection-----------------
+# kubectl cluster-info
+
+# -----------Pull live resources to confirm the API server is fully connected and responding -----------------
+# kubectl get nodes
