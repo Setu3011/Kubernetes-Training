@@ -1,5 +1,11 @@
+# Cluster Role and Cluster Role Binding 
+# A ClusterRole defines a set of permissions across an entire Kubernetes cluster, while a ClusterRoleBinding grants those permissions to specific users, groups, or service accounts cluster-wide.
+
+# ClusterRole = What permissions are allowed?
+# ClusterRoleBinding = Who gets those permissions?
+
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: pod-reader-role
   namespace: default
