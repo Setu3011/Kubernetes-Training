@@ -1,0 +1,137 @@
+# This manifest file defines a Mysql database, backend and frontend deployments in the kubernetes cluster. It includes services for each component to enable communication between them.
+
+---
+# 1. MYSQL DATABASE SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  labels:
+    app: mysql
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mysql
+  clusterIP: None # Headless service for stable statefulset DNS
+---
+# 2. MYSQL DATABASE STATEFULSET (WITH ENV VARIABLES)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  serviceName: "mysql-service"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "YourRootPassword123" # In production, use Secrets instead
+        - name: MYSQL_DATABASE
+          value: "mydatabase"
+        - name: MYSQL_USER
+          value: "dbuser"
+        - name: MYSQL_PASSWORD
+          value: "dbuserpassword"
+        ports:
+        - containerPort: 3306
+          name: mysql
+---
+# 3. BACKEND DEPLOYMENT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: node:18-alpine # Real, lightweight Node.js base image
+        command: ["node", "-e", "const http = require('http'); http.createServer((req, res) => { res.writeHead(200); res.end('Backend is running!'); }).listen(5000);"]
+        ports:
+        - containerPort: 5000
+        env:
+        # Connecting the backend to the MySQL service using K8s DNS
+        - name: DB_HOST
+          value: "mysql"
+        - name: DB_NAME
+          value: "mysqldatabase"
+        - name: DB_USER
+          value: "admin"
+        - name: DB_PASSWORD
+          value: "admin@123"
+---
+# 4. BACKEND SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+---
+# 5. FRONTEND DEPLOYMENT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend-container
+        image: nginx:alpine # Real, lightweight Nginx web server image
+        ports:
+        - containerPort: 80
+        env:
+        # Pointing the frontend to communicate with the backend service API
+        - name: BACKEND_API_URL
+          value: "http://backend-service:5000"
+---
+# 6. FRONTEND SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: NodePort # Changes to LoadBalancer if you are on a cloud provider
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080 # Accessible at http://<node-ip>:30080
